@@ -41,7 +41,9 @@ readDataForPlot <- function() {
   close(con)
   
   # read into dataframe
-  df <- read.csv2('household_power_consumption.txt', header = FALSE, skip = start - 1, nrows = end - start)
+  df <- read.csv2('household_power_consumption.txt', header = FALSE, 
+                  skip = start - 1, nrows = end - start, dec = ".",
+                  stringsAsFactors = FALSE, na.strings = "?")
   colnames(df) <- cn
   
   df$Date <- as.Date(df$Date, "%d/%m/%Y")
