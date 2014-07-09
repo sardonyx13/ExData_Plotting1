@@ -9,7 +9,7 @@ readDataForPlot <- function() {
   open(con)
   
   # read header, keep names
-  cn <- unlist(strsplit(readLines(con, n = 1, warn = FALSE), ";"))
+  cn <- strsplit(readLines(con, n = 1, warn = FALSE), ";")[[1]]
   
   lineno <- 1 # current line number
   start  <- 0 # line number which correspond to 2007/02/01
@@ -26,7 +26,7 @@ readDataForPlot <- function() {
     lineno <- lineno + 1
     
     # extract 'Date' from the current row
-    dt <- as.Date(unlist(strsplit(line, ";"))[1], "%d/%m/%Y")
+    dt <- as.Date(strsplit(line, ";")[[1]][1], "%d/%m/%Y")
     
     if(dt >= dtStart && start == 0) {
       start <- lineno
@@ -46,7 +46,7 @@ readDataForPlot <- function() {
                   stringsAsFactors = FALSE, na.strings = "?")
   colnames(df) <- cn
   
+  df$DateTime <- strptime(paste(df$Date, df$Time), "%d/%m/%Y %H:%M:%S")
   df$Date <- as.Date(df$Date, "%d/%m/%Y")
   df
 }
-
